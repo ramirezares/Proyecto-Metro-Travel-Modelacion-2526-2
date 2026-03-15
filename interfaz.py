@@ -260,7 +260,7 @@ class MetroTravelApp:
             frame_botones,
             text="📖  Instrucciones",
             font=("Segoe UI", 10),
-            fg=COLORES["texto_claro"],
+            fg=COLORES["texto_oscuro"],
             bg=COLORES["azul_medio"],
             activebackground=COLORES["azul_oscuro"],
             activeforeground=COLORES["texto_claro"],
@@ -278,11 +278,11 @@ class MetroTravelApp:
         # Botón primario: Calcular Ruta Óptima (naranja)
         self.btn_calcular = tk.Button(
             frame_botones,
-            text="✈  Calcular Ruta Óptima",
-            font=("Segoe UI", 10, "bold"),
-            fg=COLORES["texto_claro"],
-            bg=COLORES["naranja"],
-            activebackground=COLORES["naranja_oscuro"],
+            text="✈️  Calcular Ruta Óptima",
+            font=("Segoe UI", 10),
+            fg=COLORES["texto_oscuro"],
+            bg=COLORES["azul_medio"],
+            activebackground=COLORES["azul_oscuro"],
             activeforeground=COLORES["texto_claro"],
             relief=tk.RAISED,
             bd=1,
@@ -292,15 +292,17 @@ class MetroTravelApp:
             command=self._on_calcular,
         )
         self.btn_calcular.pack(side=tk.LEFT, padx=(0, 8))
-        self.btn_calcular.bind("<Enter>", lambda e: self.btn_calcular.config(bg=COLORES["naranja_hover"]))
-        self.btn_calcular.bind("<Leave>", lambda e: self.btn_calcular.config(bg=COLORES["naranja"]))
+        self.btn_instrucciones.bind("<Enter>", lambda e: self.btn_instrucciones.config(bg=COLORES["azul_claro"]))
+        self.btn_instrucciones.bind("<Leave>", lambda e: self.btn_instrucciones.config(bg=COLORES["azul_medio"]))
+        # self.btn_calcular.bind("<Enter>", lambda e: self.btn_calcular.config(bg=COLORES["naranja_hover"]))
+        # self.btn_calcular.bind("<Leave>", lambda e: self.btn_calcular.config(bg=COLORES["naranja"]))
 
         # Botón: Visualizar Mapa (azul)
         self.btn_mapa = tk.Button(
             frame_botones,
             text="🗺  Visualizar Mapa",
             font=("Segoe UI", 10),
-            fg=COLORES["texto_claro"],
+            fg=COLORES["texto_oscuro"],
             bg=COLORES["azul_medio"],
             activebackground=COLORES["azul_oscuro"],
             activeforeground=COLORES["texto_claro"],
