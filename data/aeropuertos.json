@@ -1,0 +1,62 @@
+[
+    {
+        "codigo": "CCS",
+        "nombre": "Caracas - Simón Bolívar",
+        "requiere_visa": false
+    },
+    {
+        "codigo": "AUA",
+        "nombre": "Aruba - Reina Beatrix",
+        "requiere_visa": false
+    },
+    {
+        "codigo": "CUR",
+        "nombre": "Curazao - Hato",
+        "requiere_visa": false
+    },
+    {
+        "codigo": "SXM",
+        "nombre": "San Martín - Princess Juliana",
+        "requiere_visa": false
+    },
+    {
+        "codigo": "SDQ",
+        "nombre": "Santo Domingo - Las Américas",
+        "requiere_visa": false
+    },
+    {
+        "codigo": "SJU",
+        "nombre": "San Juan - Luis Muñoz Marín",
+        "requiere_visa": true
+    },
+    {
+        "codigo": "MIA",
+        "nombre": "Miami - International",
+        "requiere_visa": true
+    },
+    {
+        "codigo": "BOG",
+        "nombre": "Bogotá - El Dorado",
+        "requiere_visa": false
+    },
+    {
+        "codigo": "PTY",
+        "nombre": "Panamá - Tocumen",
+        "requiere_visa": false
+    },
+    {
+        "codigo": "KIN",
+        "nombre": "Kingston - Norman Manley",
+        "requiere_visa": true
+    },
+    {
+        "codigo": "POS",
+        "nombre": "Trinidad - Piarco",
+        "requiere_visa": false
+    },
+    {
+        "codigo": "BGI",
+        "nombre": "Barbados - Grantley Adams",
+        "requiere_visa": false
+    }
+]
