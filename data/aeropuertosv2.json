@@ -1,0 +1,12 @@
+[
+    {
+        "codigo": "CCS",
+        "nombre": "Caracas - Simón Bolívar",
+        "requiere_visa": false
+    },
+    {
+        "codigo": "AUA",
+        "nombre": "Aruba - Reina Beatrix",
+        "requiere_visa": false
+    }
+]

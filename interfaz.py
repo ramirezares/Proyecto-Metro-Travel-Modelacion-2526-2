@@ -12,6 +12,7 @@ import tkinter as tk
 from tkinter import ttk
 from tkinter.scrolledtext import ScrolledText
 from tkinter import filedialog, messagebox
+import json
 import os
 import sys
 import glob
@@ -101,10 +102,10 @@ class MetroTravelApp(tk.Frame):
         """Configura las propiedades generales de la ventana principal."""
         self.root.title("Sistema de Rutas - Metro Travel")
         self.root.configure(bg=COLORES["fondo"])
-        self.root.minsize(900, 720)
+        self.root.minsize(1100, 720)
 
         # Centrar la ventana en la pantalla
-        ancho = 950
+        ancho = 1100
         alto = 720
         x = (self.root.winfo_screenwidth() // 2) - (ancho // 2)
         y = (self.root.winfo_screenheight() // 2) - (alto // 2)
@@ -128,6 +129,7 @@ class MetroTravelApp(tk.Frame):
         self._crear_panel_configuracion()
         self._crear_barra_accion()
         self._crear_area_resultados()
+        self._crear_barra_salida()
 
     # --- Cabecera -----------------------------------------------------------
 
@@ -255,6 +257,7 @@ class MetroTravelApp(tk.Frame):
         """Crea la barra de botones de acción."""
         frame_botones = tk.Frame(self.root, bg=COLORES["fondo"], pady=8)
         frame_botones.pack(fill=tk.X, padx=20)
+        frame_botones.grid_columnconfigure((0, 1, 2, 3, 4, 5), weight=1, uniform="acciones")
 
         # Botón: Instrucciones (azul)
         self.btn_instrucciones = tk.Button(
@@ -272,14 +275,14 @@ class MetroTravelApp(tk.Frame):
             cursor="hand2",
             command=self._on_instrucciones,
         )
-        self.btn_instrucciones.pack(side=tk.LEFT, padx=(0, 8))
+        self.btn_instrucciones.grid(row=0, column=0, sticky="ew", padx=4)
         self.btn_instrucciones.bind("<Enter>", lambda e: self.btn_instrucciones.config(bg=COLORES["azul_claro"]))
         self.btn_instrucciones.bind("<Leave>", lambda e: self.btn_instrucciones.config(bg=COLORES["azul_medio"]))
 
         # Botón primario: Calcular Ruta Óptima (naranja)
         self.btn_calcular = tk.Button(
             frame_botones,
-            text="✈️  Calcular Ruta Óptima",
+            text="✈️ Calcular Ruta Óptima",
             font=("Segoe UI", 10),
             fg=COLORES["texto_oscuro"],
             bg=COLORES["azul_medio"],
@@ -287,12 +290,13 @@ class MetroTravelApp(tk.Frame):
             activeforeground=COLORES["texto_claro"],
             relief=tk.RAISED,
             bd=1,
-            padx=18,
+            padx=10,
             pady=6,
+            #width=18,
             cursor="hand2",
             command=self._on_calcular,
         )
-        self.btn_calcular.pack(side=tk.LEFT, padx=(0, 8))
+        self.btn_calcular.grid(row=0, column=1, sticky="ew", padx=4)
         self.btn_instrucciones.bind("<Enter>", lambda e: self.btn_instrucciones.config(bg=COLORES["azul_claro"]))
         self.btn_instrucciones.bind("<Leave>", lambda e: self.btn_instrucciones.config(bg=COLORES["azul_medio"]))
         # self.btn_calcular.bind("<Enter>", lambda e: self.btn_calcular.config(bg=COLORES["naranja_hover"]))
@@ -301,7 +305,7 @@ class MetroTravelApp(tk.Frame):
         # Botón: Visualizar Mapa (azul)
         self.btn_mapa = tk.Button(
             frame_botones,
-            text="🗺  Visualizar Mapa",
+            text="🗺 Visualizar Mapa",
             font=("Segoe UI", 10),
             fg=COLORES["texto_oscuro"],
             bg=COLORES["azul_medio"],
@@ -314,14 +318,33 @@ class MetroTravelApp(tk.Frame):
             cursor="hand2",
             command=self._on_visualizar,
         )
-        self.btn_mapa.pack(side=tk.LEFT, padx=(0, 8))
+        self.btn_mapa.grid(row=0, column=2, sticky="ew", padx=4)
         self.btn_mapa.bind("<Enter>", lambda e: self.btn_mapa.config(bg=COLORES["azul_claro"]))
         self.btn_mapa.bind("<Leave>", lambda e: self.btn_mapa.config(bg=COLORES["azul_medio"]))
 
         # Botón: Limpiar
         self.btn_limpiar = tk.Button(
             frame_botones,
-            text="🔄  Limpiar",
+            text="🔄Limpiar",
+            font=("Segoe UI", 10),
+            fg=COLORES["texto_oscuro"],
+            bg="#E0E0E0",
+            activebackground="#2E2323",
+            relief=tk.RAISED,
+            bd=1,
+            padx=14,
+            pady=6,
+            cursor="hand2",
+            command=self._on_limpiar,
+        )
+        self.btn_limpiar.grid(row=0, column=3, sticky="ew", padx=4)
+        self.btn_limpiar.bind("<Enter>", lambda e: self.btn_limpiar.config(bg="#D0D0D0"))
+        self.btn_limpiar.bind("<Leave>", lambda e: self.btn_limpiar.config(bg="#E0E0E0"))
+
+        # Agregar aeropuertos y vuelos (mismo botón de datos fuente, pero con otro texto)
+        self.btn_agregar = tk.Button(
+            frame_botones,
+            text="➕ Agregar destino",
             font=("Segoe UI", 10),
             fg=COLORES["texto_oscuro"],
             bg="#E0E0E0",
@@ -331,12 +354,12 @@ class MetroTravelApp(tk.Frame):
             padx=14,
             pady=6,
             cursor="hand2",
-            command=self._on_limpiar,
+            command=self._on_agregar,
         )
-        self.btn_limpiar.pack(side=tk.LEFT, padx=(0, 8))
-        self.btn_limpiar.bind("<Enter>", lambda e: self.btn_limpiar.config(bg="#D0D0D0"))
-        self.btn_limpiar.bind("<Leave>", lambda e: self.btn_limpiar.config(bg="#E0E0E0"))
-
+        self.btn_agregar.grid(row=0, column=4, sticky="ew", padx=4)
+        self.btn_agregar.bind("<Enter>", lambda e: self.btn_agregar.config(bg="#D0D0D0"))
+        self.btn_agregar.bind("<Leave>", lambda e: self.btn_agregar.config(bg="#E0E0E0"))
+       
         # Botón: Seleccionar fuente de datos
         self.btn_datos = tk.Button(
             frame_botones,
@@ -352,29 +375,12 @@ class MetroTravelApp(tk.Frame):
             cursor="hand2",
             command=self._on_datos_fuente,
         )
-        self.btn_datos.pack(side=tk.LEFT, padx=(0, 8))
+        self.btn_datos.grid(row=0, column=5, sticky="ew", padx=4)
         self.btn_datos.bind("<Enter>", lambda e: self.btn_datos.config(bg="#D0D0D0"))
         self.btn_datos.bind("<Leave>", lambda e: self.btn_datos.config(bg="#E0E0E0"))
 
-        # Botón: Salir (derecha)
-        self.btn_salir = tk.Button(
-            frame_botones,
-            text="✖  Salir",
-            font=("Segoe UI", 10),
-            fg=COLORES["error"],
-            bg="#E0E0E0",
-            activebackground="#FFCDD2",
-            relief=tk.RAISED,
-            bd=1,
-            padx=14,
-            pady=6,
-            cursor="hand2",
-            command=self._on_salir,
-        )
-        self.btn_salir.pack(side=tk.RIGHT)
-        self.btn_salir.bind("<Enter>", lambda e: self.btn_salir.config(bg="#FFCDD2"))
-        self.btn_salir.bind("<Leave>", lambda e: self.btn_salir.config(bg="#E0E0E0"))
 
+       
     # --- Área de resultados -------------------------------------------------
 
     def _crear_area_resultados(self):
@@ -404,7 +410,29 @@ class MetroTravelApp(tk.Frame):
             height=14,
         )
         self.txt_resultados.pack(fill=tk.BOTH, expand=True, padx=20, pady=(0, 15))
+    
+    def _crear_barra_salida(self):
+        """Crea la barra inferior con el botón de salir."""
+        frame_salida = tk.Frame(self.root, bg=COLORES["fondo"], pady=10)
+        frame_salida.pack(fill=tk.X, padx=20)
 
+        self.btn_salir = tk.Button(
+            frame_salida,
+            text="✖ Salir",
+            font=("Segoe UI", 10),
+            fg=COLORES["texto_oscuro"],
+            bg="#E0E0E0",
+            activebackground="#BDBDBD",
+            relief=tk.RAISED,
+            bd=1,
+            padx=14,
+            pady=6,
+            cursor="hand2",
+            command=self._on_salir,
+        )
+        self.btn_salir.pack(side=tk.RIGHT)
+        self.btn_salir.bind("<Enter>", lambda e: self.btn_salir.config(bg="#FF0000"))
+        self.btn_salir.bind("<Leave>", lambda e: self.btn_salir.config(bg="#E0E0E0"))
     # ========================================================================
     # UTILIDADES
     # ========================================================================
@@ -599,6 +627,79 @@ class MetroTravelApp(tk.Frame):
                 self.escribir_resultado(
                     "\n⚠  La función de recarga de datos no está conectada.\n"
                 )
+
+    def _on_agregar_datos(self):
+        """Abre el diálogo de selección de fuente de datos JSON."""
+        dialogo = DialogoAgregar(self.root, self.data_dir)
+        self.root.wait_window(dialogo.ventana)
+
+        # Si el usuario confirmó ambas selecciones
+        if dialogo.confirmado and dialogo.ruta_aeropuertos and dialogo.ruta_vuelos:
+            if self.callback_datos_fuente:
+                exito = self.callback_datos_fuente(
+                    dialogo.ruta_aeropuertos, dialogo.ruta_vuelos
+                )
+                if exito:
+                    # Actualizar nombres de archivos
+                    self.nombre_archivo_ap = os.path.basename(dialogo.ruta_aeropuertos)
+                    self.nombre_archivo_vl = os.path.basename(dialogo.ruta_vuelos)
+
+                    # Si estaba bloqueada, desbloquear
+                    if not self.datos_cargados:
+                        self.datos_cargados = True
+                        self.desbloquear_interfaz()
+
+                    self.escribir_resultado(
+                        "\n" + "═" * 55 +
+                        "\n  📂  FUENTE DE DATOS ACTUALIZADA" +
+                        "\n" + "═" * 55 +
+                        f"\n\n  Aeropuertos: {self.nombre_archivo_ap}" +
+                        f"\n  Vuelos:      {self.nombre_archivo_vl}" +
+                        "\n\n  Datos recargados exitosamente." +
+                        "\n" + "═" * 55
+                    )
+                    # Mostrar instrucciones después de cargar datos
+                    self._mostrar_instrucciones()
+            else:
+                self.escribir_resultado(
+                    "\n⚠  La función de recarga de datos no está conectada.\n"
+                )
+
+    def _on_agregar(self):
+        """Abre el diálogo para agregar aeropuerto o vuelo a los JSON activos."""
+        ruta_ap = os.path.join(self.data_dir, self.nombre_archivo_ap)
+        ruta_vl = os.path.join(self.data_dir, self.nombre_archivo_vl)
+
+        if not os.path.exists(ruta_ap) or not os.path.exists(ruta_vl):
+            messagebox.showerror(
+                "Archivos no encontrados",
+                "No se encontraron los archivos activos de aeropuertos y vuelos.",
+                parent=self.root,
+            )
+            return
+
+        dialogo = DialogoAgregar(self.root, ruta_ap, ruta_vl, self.aeropuertos)
+        self.root.wait_window(dialogo.ventana)
+
+        if dialogo.confirmado and self.callback_datos_fuente:
+            exito = self.callback_datos_fuente(ruta_ap, ruta_vl)
+            if exito:
+                resumen = []
+                if dialogo.aeropuerto_agregado:
+                    resumen.append("Aeropuerto agregado")
+                if dialogo.vuelo_agregado:
+                    resumen.append("Vuelo agregado")
+                if resumen:
+                    self.escribir_resultado(
+                        "\n" + "═" * 55 +
+                        "\n  ➕  ACTUALIZACIÓN DE DATOS" +
+                        "\n" + "═" * 55 +
+                        f"\n\n  {' + '.join(resumen)} correctamente." +
+                        "\n\n  Base de datos recargada con éxito." +
+                        "\n" + "═" * 55
+                    )
+            else:
+                self.escribir_resultado("\n⚠  No se pudo recargar la base de datos tras agregar registros.\n")
 
     def _on_salir(self):
         """Maneja el evento del botón 'Salir'. Cierra la aplicación."""
@@ -888,3 +989,433 @@ class DialogoFuenteDatos:
         self.ruta_aeropuertos = None
         self.ruta_vuelos = None
         self.ventana.destroy()
+
+    
+
+# ============================================================================
+# DIÁLOGO DE SELECCIÓN DE FUENTE DE DATOS
+# ============================================================================
+
+class DialogoAgregar:
+    """
+    Ventana modal para agregar datos a los JSON activos del sistema.
+
+    Secciones:
+        - Agregar aeropuerto: código, nombre y visa.
+        - Agregar vuelo: origen, destino y precio.
+    """
+
+    def __init__(self, parent, ruta_aeropuertos, ruta_vuelos, aeropuertos_actuales):
+        self.parent = parent
+        self.ruta_aeropuertos = ruta_aeropuertos
+        self.ruta_vuelos = ruta_vuelos
+        self.codigos = sorted(list((aeropuertos_actuales or {}).keys()))
+
+        self.confirmado = False
+        self.aeropuerto_agregado = False
+        self.vuelo_agregado = False
+
+        self._crear_ventana()
+
+    def _crear_ventana(self):
+        """Crea la ventana modal para agregar aeropuerto y vuelo."""
+        self.ventana = tk.Toplevel(self.parent)
+        self.ventana.title("Agregar Aeropuerto / Vuelo")
+        self.ventana.configure(bg=COLORES["fondo"])
+        self.ventana.resizable(False, False)
+        self.ventana.grab_set()  # Modal
+        self.ventana.transient(self.parent)
+
+        # Centrar respecto al padre
+        ancho, alto = 620, 520
+        x = self.parent.winfo_rootx() + (self.parent.winfo_width() // 2) - (ancho // 2)
+        y = self.parent.winfo_rooty() + (self.parent.winfo_height() // 2) - (alto // 2)
+        self.ventana.geometry(f"{ancho}x{alto}+{x}+{y}")
+
+        # Interceptar cierre con X
+        self.ventana.protocol("WM_DELETE_WINDOW", self._on_cancelar)
+
+        # --- Cabecera ---
+        frame_header = tk.Frame(self.ventana, bg=COLORES["azul_oscuro"], pady=10)
+        frame_header.pack(fill=tk.X)
+        tk.Label(
+            frame_header, text="➕  Agregar Registros",
+            font=("Segoe UI", 14, "bold"),
+            fg=COLORES["texto_claro"], bg=COLORES["azul_oscuro"],
+        ).pack()
+        tk.Label(
+            frame_header,
+            text="Agregue aeropuertos y vuelos directamente a los JSON activos",
+            font=("Segoe UI", 9),
+            fg=COLORES["naranja"], bg=COLORES["azul_oscuro"],
+        ).pack()
+
+        # --- Cuerpo ---
+        frame_body = tk.Frame(self.ventana, bg=COLORES["fondo"], padx=25, pady=15)
+        frame_body.pack(fill=tk.BOTH, expand=True)
+
+        # --- Sección: Agregar aeropuerto ---
+        frame_ap = tk.LabelFrame(
+            frame_body,
+            text="  ✈ Agregar aeropuerto  ",
+            font=("Segoe UI", 10, "bold"),
+            fg=COLORES["azul_oscuro"],
+            bg=COLORES["fondo_panel"],
+            padx=12,
+            pady=10,
+            bd=2,
+            relief=tk.GROOVE,
+        )
+        frame_ap.pack(fill=tk.X, pady=(0, 12))
+
+        tk.Label(
+            frame_ap, text="Código:",
+            font=("Segoe UI", 10, "bold"),
+            fg=COLORES["texto_oscuro"], bg=COLORES["fondo_panel"],
+        ).grid(row=0, column=0, sticky=tk.W, padx=(0, 8), pady=(0, 8))
+
+        self.var_codigo = tk.StringVar()
+        vcmd_codigo = (self.ventana.register(self._validar_codigo_tecla), "%P")
+        self.entry_codigo = tk.Entry(
+            frame_ap,
+            textvariable=self.var_codigo,
+            width=8,
+            font=("Segoe UI", 10),
+            validate="key",
+            validatecommand=vcmd_codigo,
+        )
+        self.entry_codigo.grid(row=0, column=1, sticky=tk.W, pady=(0, 8))
+
+        tk.Label(
+            frame_ap, text="Nombre:",
+            font=("Segoe UI", 10, "bold"),
+            fg=COLORES["texto_oscuro"], bg=COLORES["fondo_panel"],
+        ).grid(row=1, column=0, sticky=tk.W, padx=(0, 8), pady=(0, 8))
+
+        self.var_nombre = tk.StringVar()
+        vcmd_nombre = (self.ventana.register(self._validar_nombre_tecla), "%P")
+        self.entry_nombre = tk.Entry(
+            frame_ap,
+            textvariable=self.var_nombre,
+            width=38,
+            font=("Segoe UI", 10),
+            validate="key",
+            validatecommand=vcmd_nombre,
+        )
+        self.entry_nombre.grid(row=1, column=1, sticky=tk.W, pady=(0, 8))
+
+        tk.Label(
+            frame_ap, text="Visa:",
+            font=("Segoe UI", 10, "bold"),
+            fg=COLORES["texto_oscuro"], bg=COLORES["fondo_panel"],
+        ).grid(row=2, column=0, sticky=tk.W, padx=(0, 8))
+
+        self.var_visa_ap = tk.StringVar(value="False")
+        self.combo_visa = ttk.Combobox(
+            frame_ap,
+            textvariable=self.var_visa_ap,
+            values=["True", "False"],
+            state="readonly",
+            width=10,
+            font=("Segoe UI", 10),
+        )
+        self.combo_visa.grid(row=2, column=1, sticky=tk.W)
+
+        self.btn_agregar_ap = tk.Button(
+            frame_ap,
+            text="➕ Agregar aeropuerto",
+            font=("Segoe UI", 10),
+            fg=COLORES["texto_oscuro"],
+            bg="#E0E0E0",
+            activebackground="#BDBDBD",
+            relief=tk.RAISED,
+            bd=1,
+            padx=12,
+            pady=4,
+            cursor="hand2",
+            command=self._agregar_aeropuerto,
+        )
+        self.btn_agregar_ap.grid(row=3, column=0, columnspan=2, sticky=tk.W, pady=(10, 0))
+
+        # --- Sección: Agregar vuelo ---
+        frame_vl = tk.LabelFrame(
+            frame_body,
+            text="  🛫 Agregar vuelo  ",
+            font=("Segoe UI", 10, "bold"),
+            fg=COLORES["azul_oscuro"],
+            bg=COLORES["fondo_panel"],
+            padx=12,
+            pady=10,
+            bd=2,
+            relief=tk.GROOVE,
+        )
+        frame_vl.pack(fill=tk.X)
+
+        tk.Label(
+            frame_vl, text="Origen:",
+            font=("Segoe UI", 10, "bold"),
+            fg=COLORES["texto_oscuro"], bg=COLORES["fondo_panel"],
+        ).grid(row=0, column=0, sticky=tk.W, padx=(0, 8), pady=(0, 8))
+
+        self.var_origen_vuelo = tk.StringVar()
+        self.combo_origen_vuelo = ttk.Combobox(
+            frame_vl,
+            textvariable=self.var_origen_vuelo,
+            values=self.codigos,
+            state="readonly",
+            width=20,
+            font=("Segoe UI", 10),
+        )
+        self.combo_origen_vuelo.grid(row=0, column=1, sticky=tk.W, pady=(0, 8))
+
+        tk.Label(
+            frame_vl, text="Destino:",
+            font=("Segoe UI", 10, "bold"),
+            fg=COLORES["texto_oscuro"], bg=COLORES["fondo_panel"],
+        ).grid(row=1, column=0, sticky=tk.W, padx=(0, 8), pady=(0, 8))
+
+        self.var_destino_vuelo = tk.StringVar()
+        self.combo_destino_vuelo = ttk.Combobox(
+            frame_vl,
+            textvariable=self.var_destino_vuelo,
+            values=self.codigos,
+            state="readonly",
+            width=20,
+            font=("Segoe UI", 10),
+        )
+        self.combo_destino_vuelo.grid(row=1, column=1, sticky=tk.W, pady=(0, 8))
+
+        tk.Label(
+            frame_vl, text="Precio:",
+            font=("Segoe UI", 10, "bold"),
+            fg=COLORES["texto_oscuro"], bg=COLORES["fondo_panel"],
+        ).grid(row=2, column=0, sticky=tk.W, padx=(0, 8))
+
+        self.var_precio = tk.StringVar()
+        vcmd_precio = (self.ventana.register(self._validar_precio_tecla), "%P")
+        self.entry_precio = tk.Entry(
+            frame_vl,
+            textvariable=self.var_precio,
+            width=16,
+            font=("Segoe UI", 10),
+            validate="key",
+            validatecommand=vcmd_precio,
+        )
+        self.entry_precio.grid(row=2, column=1, sticky=tk.W)
+
+        self.btn_agregar_vl = tk.Button(
+            frame_vl,
+            text="➕ Agregar vuelo",
+            font=("Segoe UI", 10),
+            fg=COLORES["texto_oscuro"],
+            bg="#E0E0E0",
+            activebackground="#BDBDBD",
+            relief=tk.RAISED,
+            bd=1,
+            padx=12,
+            pady=4,
+            cursor="hand2",
+            command=self._agregar_vuelo,
+        )
+        self.btn_agregar_vl.grid(row=3, column=0, columnspan=2, sticky=tk.W, pady=(10, 0))
+
+        # --- Botonera inferior ---
+        frame_btns = tk.Frame(self.ventana, bg=COLORES["fondo"], pady=10)
+        frame_btns.pack(fill=tk.X, padx=25)
+
+        self.btn_cerrar = tk.Button(
+            frame_btns, text="✔  Cerrar",
+            font=("Segoe UI", 10, "bold"),
+            fg=COLORES["texto_claro"], bg=COLORES["naranja"],
+            activebackground=COLORES["naranja_oscuro"],
+            activeforeground=COLORES["texto_claro"],
+            padx=16, pady=5, cursor="hand2",
+            command=self._on_confirmar,
+        )
+        self.btn_cerrar.pack(side=tk.LEFT, padx=(0, 10))
+
+        # btn_cancelar = tk.Button(
+        #     frame_btns, text="✖  Cancelar",
+        #     font=("Segoe UI", 10),
+        #     fg=COLORES["error"], bg="#E0E0E0",
+        #     padx=16, pady=5, cursor="hand2",
+        #     command=self._on_cancelar,
+        # )
+        # btn_cancelar.pack(side=tk.LEFT)
+
+    # --- Helpers del diálogo ---
+
+    def _validar_codigo_tecla(self, nuevo_valor):
+        """Permite solo letras y máximo 3 caracteres para código."""
+        if len(nuevo_valor) > 3:
+            return False
+        if nuevo_valor and not nuevo_valor.isalpha():
+            return False
+        return True
+
+    def _validar_nombre_tecla(self, nuevo_valor):
+        """Permite máximo 30 caracteres para nombre."""
+        return len(nuevo_valor) <= 30
+
+    def _validar_precio_tecla(self, nuevo_valor):
+        """Permite solo números en el campo precio."""
+        return nuevo_valor.isdigit() or nuevo_valor == ""
+
+    def _leer_json_lista(self, ruta):
+        with open(ruta, "r", encoding="utf-8") as archivo:
+            data = json.load(archivo)
+        if not isinstance(data, list):
+            raise ValueError("El archivo JSON debe contener una lista.")
+        return data
+
+    def _guardar_json_lista(self, ruta, data):
+        with open(ruta, "w", encoding="utf-8") as archivo:
+            json.dump(data, archivo, ensure_ascii=False, indent=4)
+
+    def _agregar_aeropuerto(self):
+        """Agrega un aeropuerto al JSON activo de aeropuertos."""
+        codigo = self.var_codigo.get().strip().upper()
+        nombre = self.var_nombre.get().strip()
+        requiere_visa = self.var_visa_ap.get() == "True"
+
+        if not codigo or len(codigo) > 3 or not codigo.isalpha():
+            messagebox.showwarning(
+                "Código inválido",
+                "El código debe tener máximo 3 caracteres y solo letras.",
+                parent=self.ventana,
+            )
+            return
+
+        if not nombre or len(nombre) > 30:
+            messagebox.showwarning(
+                "Nombre inválido",
+                "El nombre es obligatorio y debe tener máximo 30 caracteres.",
+                parent=self.ventana,
+            )
+            return
+
+        try:
+            aeropuertos = self._leer_json_lista(self.ruta_aeropuertos)
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo leer aeropuertos: {e}", parent=self.ventana)
+            return
+
+        if any(str(item.get("codigo", "")).upper() == codigo for item in aeropuertos):
+            messagebox.showwarning(
+                "Código existente",
+                f"Ya existe un aeropuerto con el código '{codigo}'.",
+                parent=self.ventana,
+            )
+            return
+
+        aeropuertos.append({
+            "codigo": codigo,
+            "nombre": nombre,
+            "requiere_visa": requiere_visa,
+        })
+
+        try:
+            self._guardar_json_lista(self.ruta_aeropuertos, aeropuertos)
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo guardar aeropuertos: {e}", parent=self.ventana)
+            return
+
+        if codigo not in self.codigos:
+            self.codigos.append(codigo)
+            self.codigos.sort()
+            self.combo_origen_vuelo["values"] = self.codigos
+            self.combo_destino_vuelo["values"] = self.codigos
+
+        self.aeropuerto_agregado = True
+        self.confirmado = True
+        self.var_codigo.set("")
+        self.var_nombre.set("")
+        self.var_visa_ap.set("False")
+
+        messagebox.showinfo(
+            "Éxito",
+            f"Aeropuerto '{codigo}' agregado correctamente.",
+            parent=self.ventana,
+        )
+
+    def _agregar_vuelo(self):
+        """Agrega un vuelo al JSON activo de vuelos."""
+        origen = self.var_origen_vuelo.get().strip()
+        destino = self.var_destino_vuelo.get().strip()
+        precio_txt = self.var_precio.get().strip()
+
+        if not origen or not destino:
+            messagebox.showwarning(
+                "Datos incompletos",
+                "Debe seleccionar origen y destino.",
+                parent=self.ventana,
+            )
+            return
+
+        if origen == destino:
+            messagebox.showwarning(
+                "Ruta inválida",
+                "El origen y el destino no pueden ser iguales.",
+                parent=self.ventana,
+            )
+            return
+
+        if not precio_txt.isdigit():
+            messagebox.showwarning(
+                "Precio inválido",
+                "El precio debe contener solo números.",
+                parent=self.ventana,
+            )
+            return
+
+        precio = int(precio_txt)
+
+        try:
+            vuelos = self._leer_json_lista(self.ruta_vuelos)
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo leer vuelos: {e}", parent=self.ventana)
+            return
+
+        if any(
+            str(item.get("origen", "")).strip().upper() == origen.upper()
+            and str(item.get("destino", "")).strip().upper() == destino.upper()
+            for item in vuelos
+        ):
+            messagebox.showwarning(
+                "Vuelo existente",
+                f"Ya existe un vuelo registrado desde '{origen}' hacia '{destino}'.",
+                parent=self.ventana,
+            )
+            return
+
+        vuelos.append({
+            "origen": origen,
+            "destino": destino,
+            "precio": precio,
+        })
+
+        try:
+            self._guardar_json_lista(self.ruta_vuelos, vuelos)
+        except Exception as e:
+            messagebox.showerror("Error", f"No se pudo guardar vuelos: {e}", parent=self.ventana)
+            return
+
+        self.vuelo_agregado = True
+        self.confirmado = True
+        self.var_precio.set("")
+
+        messagebox.showinfo(
+            "Éxito",
+            f"Vuelo {origen} → {destino} agregado correctamente.",
+            parent=self.ventana,
+        )
+
+    def _on_confirmar(self):
+        """Cierra la ventana. Si hubo cambios, confirmado permanece en True."""
+        self.ventana.destroy()
+
+    def _on_cancelar(self):
+        """Cierra el diálogo sin forzar confirmación."""
+        self.ventana.destroy()
+
+    

@@ -58,5 +58,10 @@
         "codigo": "BGI",
         "nombre": "Barbados - Grantley Adams",
         "requiere_visa": false
+    },
+    {
+        "codigo": "TOR",
+        "nombre": "Toronto - Canada",
+        "requiere_visa": true
     }
 ]

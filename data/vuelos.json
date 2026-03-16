@@ -1,44 +1,227 @@
 [
-    {"origen": "CCS", "destino": "AUA", "precio": 120},
-    {"origen": "CCS", "destino": "BOG", "precio": 180},
-    {"origen": "CCS", "destino": "SDQ", "precio": 250},
-    {"origen": "CCS", "destino": "POS", "precio": 150},
-    {"origen": "AUA", "destino": "CCS", "precio": 125},
-    {"origen": "AUA", "destino": "CUR", "precio": 45},
-    {"origen": "AUA", "destino": "SXM", "precio": 160},
-    {"origen": "AUA", "destino": "MIA", "precio": 280},
-    {"origen": "CUR", "destino": "AUA", "precio": 50},
-    {"origen": "CUR", "destino": "BOG", "precio": 200},
-    {"origen": "CUR", "destino": "BGI", "precio": 190},
-    {"origen": "SXM", "destino": "AUA", "precio": 165},
-    {"origen": "SXM", "destino": "SJU", "precio": 95},
-    {"origen": "SXM", "destino": "SDQ", "precio": 130},
-    {"origen": "SDQ", "destino": "CCS", "precio": 255},
-    {"origen": "SDQ", "destino": "SXM", "precio": 135},
-    {"origen": "SDQ", "destino": "SJU", "precio": 110},
-    {"origen": "SDQ", "destino": "MIA", "precio": 220},
-    {"origen": "SDQ", "destino": "KIN", "precio": 175},
-    {"origen": "SJU", "destino": "SXM", "precio": 100},
-    {"origen": "SJU", "destino": "SDQ", "precio": 115},
-    {"origen": "SJU", "destino": "MIA", "precio": 150},
-    {"origen": "BOG", "destino": "CCS", "precio": 185},
-    {"origen": "BOG", "destino": "CUR", "precio": 205},
-    {"origen": "BOG", "destino": "PTY", "precio": 140},
-    {"origen": "BOG", "destino": "MIA", "precio": 300},
-    {"origen": "PTY", "destino": "BOG", "precio": 145},
-    {"origen": "PTY", "destino": "MIA", "precio": 260},
-    {"origen": "PTY", "destino": "KIN", "precio": 210},
-    {"origen": "KIN", "destino": "SDQ", "precio": 180},
-    {"origen": "KIN", "destino": "PTY", "precio": 215},
-    {"origen": "KIN", "destino": "MIA", "precio": 190},
-    {"origen": "MIA", "destino": "SJU", "precio": 155},
-    {"origen": "MIA", "destino": "SDQ", "precio": 225},
-    {"origen": "MIA", "destino": "BOG", "precio": 305},
-    {"origen": "MIA", "destino": "PTY", "precio": 265},
-    {"origen": "POS", "destino": "CCS", "precio": 155},
-    {"origen": "POS", "destino": "BGI", "precio": 60},
-    {"origen": "POS", "destino": "SXM", "precio": 200},
-    {"origen": "BGI", "destino": "POS", "precio": 65},
-    {"origen": "BGI", "destino": "SXM", "precio": 170},
-    {"origen": "BGI", "destino": "CUR", "precio": 195}
+    {
+        "origen": "CCS",
+        "destino": "AUA",
+        "precio": 120
+    },
+    {
+        "origen": "CCS",
+        "destino": "BOG",
+        "precio": 180
+    },
+    {
+        "origen": "CCS",
+        "destino": "SDQ",
+        "precio": 250
+    },
+    {
+        "origen": "CCS",
+        "destino": "POS",
+        "precio": 150
+    },
+    {
+        "origen": "AUA",
+        "destino": "CCS",
+        "precio": 125
+    },
+    {
+        "origen": "AUA",
+        "destino": "CUR",
+        "precio": 45
+    },
+    {
+        "origen": "AUA",
+        "destino": "SXM",
+        "precio": 160
+    },
+    {
+        "origen": "AUA",
+        "destino": "MIA",
+        "precio": 280
+    },
+    {
+        "origen": "CUR",
+        "destino": "AUA",
+        "precio": 50
+    },
+    {
+        "origen": "CUR",
+        "destino": "BOG",
+        "precio": 200
+    },
+    {
+        "origen": "CUR",
+        "destino": "BGI",
+        "precio": 190
+    },
+    {
+        "origen": "SXM",
+        "destino": "AUA",
+        "precio": 165
+    },
+    {
+        "origen": "SXM",
+        "destino": "SJU",
+        "precio": 95
+    },
+    {
+        "origen": "SXM",
+        "destino": "SDQ",
+        "precio": 130
+    },
+    {
+        "origen": "SDQ",
+        "destino": "CCS",
+        "precio": 255
+    },
+    {
+        "origen": "SDQ",
+        "destino": "SXM",
+        "precio": 135
+    },
+    {
+        "origen": "SDQ",
+        "destino": "SJU",
+        "precio": 110
+    },
+    {
+        "origen": "SDQ",
+        "destino": "MIA",
+        "precio": 220
+    },
+    {
+        "origen": "SDQ",
+        "destino": "KIN",
+        "precio": 175
+    },
+    {
+        "origen": "SJU",
+        "destino": "SXM",
+        "precio": 100
+    },
+    {
+        "origen": "SJU",
+        "destino": "SDQ",
+        "precio": 115
+    },
+    {
+        "origen": "SJU",
+        "destino": "MIA",
+        "precio": 150
+    },
+    {
+        "origen": "BOG",
+        "destino": "CCS",
+        "precio": 185
+    },
+    {
+        "origen": "BOG",
+        "destino": "CUR",
+        "precio": 205
+    },
+    {
+        "origen": "BOG",
+        "destino": "PTY",
+        "precio": 140
+    },
+    {
+        "origen": "BOG",
+        "destino": "MIA",
+        "precio": 300
+    },
+    {
+        "origen": "PTY",
+        "destino": "BOG",
+        "precio": 145
+    },
+    {
+        "origen": "PTY",
+        "destino": "MIA",
+        "precio": 260
+    },
+    {
+        "origen": "PTY",
+        "destino": "KIN",
+        "precio": 210
+    },
+    {
+        "origen": "KIN",
+        "destino": "SDQ",
+        "precio": 180
+    },
+    {
+        "origen": "KIN",
+        "destino": "PTY",
+        "precio": 215
+    },
+    {
+        "origen": "KIN",
+        "destino": "MIA",
+        "precio": 190
+    },
+    {
+        "origen": "MIA",
+        "destino": "SJU",
+        "precio": 155
+    },
+    {
+        "origen": "MIA",
+        "destino": "SDQ",
+        "precio": 225
+    },
+    {
+        "origen": "MIA",
+        "destino": "BOG",
+        "precio": 305
+    },
+    {
+        "origen": "MIA",
+        "destino": "PTY",
+        "precio": 265
+    },
+    {
+        "origen": "POS",
+        "destino": "CCS",
+        "precio": 155
+    },
+    {
+        "origen": "POS",
+        "destino": "BGI",
+        "precio": 60
+    },
+    {
+        "origen": "POS",
+        "destino": "SXM",
+        "precio": 200
+    },
+    {
+        "origen": "BGI",
+        "destino": "POS",
+        "precio": 65
+    },
+    {
+        "origen": "BGI",
+        "destino": "SXM",
+        "precio": 170
+    },
+    {
+        "origen": "BGI",
+        "destino": "CUR",
+        "precio": 195
+    },
+    {
+        "origen": "TOR",
+        "destino": "BOG",
+        "precio": 100
+    },
+    {
+        "origen": "CCS",
+        "destino": "TOR",
+        "precio": 125
+    },
+    {
+        "origen": "BOG",
+        "destino": "TOR",
+        "precio": 100
+    }
 ]

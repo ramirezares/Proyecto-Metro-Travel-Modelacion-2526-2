@@ -1,0 +1,4 @@
+[
+    {"origen": "CCS", "destino": "AUA", "precio": 120},
+    {"origen": "AUA", "destino": "CCS", "precio": 125}
+]
