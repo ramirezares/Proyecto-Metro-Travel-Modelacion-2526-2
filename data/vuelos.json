@@ -208,20 +208,5 @@
         "origen": "BGI",
         "destino": "CUR",
         "precio": 195
-    },
-    {
-        "origen": "TOR",
-        "destino": "BOG",
-        "precio": 100
-    },
-    {
-        "origen": "CCS",
-        "destino": "TOR",
-        "precio": 125
-    },
-    {
-        "origen": "BOG",
-        "destino": "TOR",
-        "precio": 100
     }
 ]

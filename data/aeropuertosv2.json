@@ -8,5 +8,10 @@
         "codigo": "AUA",
         "nombre": "Aruba - Reina Beatrix",
         "requiere_visa": false
+    },
+    {
+        "codigo": "BOG",
+        "nombre": "Bogota - Colombia",
+        "requiere_visa": true
     }
 ]

@@ -1,4 +1,17 @@
 [
-    {"origen": "CCS", "destino": "AUA", "precio": 120},
-    {"origen": "AUA", "destino": "CCS", "precio": 125}
+    {
+        "origen": "CCS",
+        "destino": "AUA",
+        "precio": 120
+    },
+    {
+        "origen": "AUA",
+        "destino": "CCS",
+        "precio": 125
+    },
+    {
+        "origen": "BOG",
+        "destino": "CCS",
+        "precio": 10
+    }
 ]
