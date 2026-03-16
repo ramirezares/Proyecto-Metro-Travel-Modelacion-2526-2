@@ -40,7 +40,7 @@ COLORES = {
 }
 
 
-class MetroTravelApp:
+class MetroTravelApp(tk.Frame):
     """
     Clase principal de la interfaz gráfica del Sistema de Rutas - Metro Travel.
     
@@ -67,6 +67,7 @@ class MetroTravelApp:
                 Recibe (ruta_aeropuertos, ruta_vuelos) y retorna True si cargó OK.
             data_dir: Directorio donde se encuentran los archivos JSON de datos.
         """
+        super().__init__(root, bg=COLORES["fondo"])
         self.root = root
         self.aeropuertos = aeropuertos or {}
         self.callback_calcular = callback_calcular
